@@ -43,21 +43,19 @@ namespace leave_management.Controllers
             var employee = _userManager.GetUsersInRoleAsync("Employee").Result;
             foreach (var emp in employee)
             {
-                if (_leaveallocationrepo.CheckAllocation(id, emp.Id))
+                if (!_leaveallocationrepo.CheckAllocation(id, emp.Id))
                 {
-                    continue;
+                    var allocation = new LeaveAllocationVM
+                    {
+                        DataCreated = DateTime.Now,
+                        EmployeeId = emp.Id,
+                        LeaveTypeId = id,
+                        NumberOfDays = leavetype.DefaultDays,
+                        Period = DateTime.Now.Year
+                    };
+                    var leaveallocation = _mapper.Map<LeaveAllocationVM, LeaveAllocation>(allocation);
+                    _leaveallocationrepo.Create(leaveallocation);
                 }
-
-                var allocation = new LeaveAllocationVM
-                {
-                    DataCreated = DateTime.Now,
-                    EmployeeId = emp.Id,
-                    LeaveTypeId = id,
-                    NumberOfDays = leavetype.DefaultDays,
-                    Period = DateTime.Now.Year
-                };
-                var leaveallocation = _mapper.Map<LeaveAllocationVM, LeaveAllocation>(allocation);
-                _leaveallocationrepo.Create(leaveallocation);
             }
             return RedirectToAction(nameof(Index));
         }
