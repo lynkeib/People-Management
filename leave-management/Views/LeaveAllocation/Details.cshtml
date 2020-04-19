@@ -64,16 +64,17 @@
 <hr/>
 <h2> Leave Allocations </h2>
 
-<div class="card" style="width:18rem;">
+<div class="card" style="width:100%;">
     <ul class="list-group list-group-flush">
         @foreach (var item in Model.LeaveAllocation)
         {
             <li class="list-group-item">
-                <h6>@item.LeaveType.Name<span class="badge badge-secondary">@item.NumberOfDays</span>|<a class="btn btn-outline-warning" asp-controller="LeaveAllocation" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil">Edit</i></a></h6> 
+                <h6>@item.LeaveType.Name<span class="badge badge-secondary">@item.NumberOfDays</span>|<a class="btn btn-outline-warning" asp-controller="LeaveAllocation" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil">Edit</i></a></h6>
             </li>
         }
     </ul>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
+<div style="margin-top:1%">
+    <a asp-action="Index" class="btn btn-outline-dark btn-block">Back to List</a>
 </div>
+
