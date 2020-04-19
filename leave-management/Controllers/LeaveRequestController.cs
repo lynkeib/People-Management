@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace leave_management.Controllers
 {
@@ -19,12 +20,14 @@ namespace leave_management.Controllers
         private readonly ILeaveRequestRepository _leaveRequestRepo;
         private readonly IMapper _mapper;
         private readonly UserManager<Employee> _userManager;
+        private readonly ILeaveTypeRepository _leaveTypeRepo;
 
-        public LeaveRequestController(ILeaveRequestRepository leaveRequestRepo, IMapper mapper, UserManager<Employee> userManager)
+        public LeaveRequestController(ILeaveRequestRepository leaveRequestRepo, IMapper mapper, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepo)
         {
             _leaveRequestRepo = leaveRequestRepo;
             _mapper = mapper;
             _userManager = userManager;
+            _leaveTypeRepo = leaveTypeRepo;
         }
 
         [Authorize(Roles = "Administrator")]
@@ -53,7 +56,17 @@ namespace leave_management.Controllers
         // GET: LeaveRequest/Create
         public ActionResult Create()
         {
-            return View();
+            var leavetypes = _leaveTypeRepo.FindAll();
+            var leaveTypeItem = leavetypes.Select(q => new SelectListItem {
+                Text = q.Name,
+                Value = q.Id.ToString()
+            });
+            var model = new CreateLeaveRequestVM
+            {
+                LeaveTypes = leaveTypeItem,
+
+            };
+            return View(model);
         }
 
         // POST: LeaveRequest/Create

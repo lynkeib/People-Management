@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -47,11 +48,9 @@ namespace leave_management.Models
     {
         [Display(Name = "Start Date")]
         [Required]
-        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [Display(Name = "Start Date")]
         [Required]
-        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public IEnumerable<SelectListItem> LeaveTypes { get; set; }
         [Display(Name = "Leave Type")]
