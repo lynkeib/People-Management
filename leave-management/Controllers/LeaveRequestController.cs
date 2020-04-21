@@ -180,13 +180,46 @@ namespace leave_management.Controllers
                     ModelState.AddModelError("", "Database Error");
                     return View(model);
                 }
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction(nameof(MyLeave));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "Something went wrong");
                 return View(model);
             }
+        }
+
+        public ActionResult MyLeave()
+        {
+            var employee = _userManager.GetUserAsync(User).Result;
+            var employeeid = employee.Id;
+            var employeeAllocations = _leaveAllocationRepo.GetLeaveAllocationsByEmployee(employeeid);
+            var employeeRequests = _leaveRequestRepo.GetLeaveRequestsByEmployee(employeeid);
+
+            var employeeAllocationModel = _mapper.Map< ICollection <LeaveAllocation> , List <LeaveAllocationVM>>(employeeAllocations);
+            var employeeRequestsModel = _mapper.Map<ICollection<LeaveRequest>, List<LeaveRequestVM>>(employeeRequests);
+            var model = new EmployeeLeaveRequestViewVM
+            {
+                LeaveAllocations = employeeAllocationModel,
+                LeaveRequests = employeeRequestsModel
+            };
+            return View(model);
+        }
+
+        public ActionResult CancelRequest(int id)
+        {
+            var leaverequest = _leaveRequestRepo.FindById(id);
+            if(leaverequest.Approved == true)
+            {
+                var employee = _userManager.GetUserAsync(User).Result;
+                var allocation = _leaveAllocationRepo.GetLeaveAllocationsByEmployeeAndType(employee.Id, leaverequest.LeaveTypeId);
+                int daysRequested = (int)(leaverequest.EndDate - leaverequest.StartDate).TotalDays;
+                allocation.NumberOfDays += daysRequested;
+                _leaveAllocationRepo.Update(allocation);
+            }
+            _leaveRequestRepo.Delete(leaverequest);
+
+            return RedirectToAction(nameof(MyLeave));
         }
 
         // GET: LeaveRequest/Edit/5

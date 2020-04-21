@@ -55,5 +55,11 @@ namespace leave_management.Repository
             _db.LeaveRequests.Update(entity);
             return Save();
         }
+
+        public ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeid)
+        {
+            var res =FindAll().Where(q => q.RequestingEmployeeId == employeeid).ToList();
+            return res;
+        }
     }
 }
