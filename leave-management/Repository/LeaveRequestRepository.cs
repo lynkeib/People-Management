@@ -30,12 +30,14 @@ namespace leave_management.Repository
 
         public ICollection<LeaveRequest> FindAll()
         {
-            return _db.LeaveRequests.Include(q => q.RequestingEmployee).Include(q => q.ApprovedBy).Include(q => q.LeaveType).ToList();
+            var res = _db.LeaveRequests.Include(q => q.RequestingEmployee).Include(q => q.ApprovedBy).Include(q => q.LeaveType).ToList();
+            return res;
         }
 
         public LeaveRequest FindById(int id)
         {
-            return _db.LeaveRequests.Include(q => q.RequestingEmployee).Include(q => q.ApprovedBy).Include(q => q.LeaveType).FirstOrDefault(q => q.Id == id);
+            var res = _db.LeaveRequests.Include(q => q.RequestingEmployee).Include(q => q.ApprovedBy).Include(q => q.LeaveType).FirstOrDefault(q => q.Id == id);
+            return res;
         }
 
         public bool isExists(int id)

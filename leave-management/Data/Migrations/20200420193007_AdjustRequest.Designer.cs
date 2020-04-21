@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using leave_management.Data;
 
 namespace leave_management.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200420193007_AdjustRequest")]
+    partial class AdjustRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,6 +280,9 @@ namespace leave_management.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("LeaveId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
 
@@ -291,7 +296,7 @@ namespace leave_management.Data.Migrations
 
                     b.HasIndex("ApprovedById");
 
-                    b.HasIndex("LeaveTypeId");
+                    b.HasIndex("LeaveId");
 
                     b.HasIndex("RequestingEmployeeId");
 
@@ -378,9 +383,6 @@ namespace leave_management.Data.Migrations
 
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RequestingEmployeeId")
                         .HasColumnType("nvarchar(450)");
@@ -518,9 +520,7 @@ namespace leave_management.Data.Migrations
 
                     b.HasOne("leave_management.Data.LeaveType", "LeaveType")
                         .WithMany()
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LeaveId");
 
                     b.HasOne("leave_management.Data.Employee", "RequestingEmployee")
                         .WithMany()

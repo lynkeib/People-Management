@@ -17,11 +17,11 @@ namespace leave_management.Data
         public string RequestingEmployeeId { get; set; }
         public DateTime StartDate{ get; set; }
         public DateTime EndDate{ get; set; }
-        [ForeignKey("LeaveId")]
+        [ForeignKey("LeaveTypeId")]
         public LeaveType LeaveType{ get; set; }
-        public int LeaveId{ get; set; }
+        public int LeaveTypeId{ get; set; }
         public DateTime DateRequested{ get; set; }
-        public DateTime DateActioned{ get; set; }
+        public DateTime? DateActioned{ get; set; }
         public bool? Approved{ get; set; }
         [ForeignKey("ApprovedById")]
         public Employee ApprovedBy{ get; set; }
