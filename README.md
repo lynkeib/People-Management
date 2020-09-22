@@ -14,7 +14,7 @@
 
 **Highlights**:
 + Forntend
-  + Booststrap
+  + Bootstrap
   + Razor
   + DataTables
   + AdminLTE Theme
